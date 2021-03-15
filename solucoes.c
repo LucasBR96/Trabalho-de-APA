@@ -25,9 +25,23 @@ int vers1_opm(int num_produtos, int valores[], int pesos[], int pmax)
        }
    }
    
-   printf ("%d", K[num_produtos][pmax]);
-
     return K[num_produtos][pmax];
+}
+
+int vers1_ingenua(int num_produtos, int valores[], int pesos[], int pmax)
+{
+
+    if (num_produtos==0 || pmax==0)
+        return 0;
+    else if (pesos[num_produtos-1] > pmax)
+        return vers1_ingenua(num_produtos - 1, valores, pesos, pmax);
+
+    else
+        return max(valores[num_produtos-1] + 
+            vers1_ingenua(num_produtos - 1, valores, pesos, pmax - pesos[num_produtos -1 ])
+            , vers1_ingenua(num_produtos - 1, valores, pesos, pmax));
+
+   
 }
 
 int main(){
@@ -44,12 +58,14 @@ int main(){
     int j = 0;
     for (j = 0; j<num_produtos; j++){
         int x;
+        //formato de entrada: valor peso
         scanf("%d %d", &i, &x);
         pesos[j] = x;
         valores[j] = i;
     }
 
-    vers1_opm(num_produtos, valores, pesos, pmax);
+    printf("ingenua %d \n", vers1_ingenua(num_produtos, valores, pesos, pmax));
+    printf("opm %d", vers1_opm(num_produtos, valores, pesos, pmax));
 
     return 0;
 }
