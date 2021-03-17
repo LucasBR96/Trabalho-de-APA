@@ -24,7 +24,7 @@ int vers1_opm(int num_produtos, int valores[], int pesos[], int pmax)
     int i, w;
     int **K;
 
-    K = (int**)malloc(sizeof(int*)*pmax);
+    K = (int**)malloc(sizeof(int*)*num_produtos);
     for (i = 0; i <= num_produtos; i++)
         K[i] = (int*)malloc(sizeof(int)*pmax);
 
@@ -105,6 +105,9 @@ int vers2_opm(int num_produtos, int valores[], int pesos[], int pmax)
     }
     int i, w;
     int **K;
+
+    K = (int**)malloc(sizeof(int*)*num_produtos*max_uses);
+
     for (i = 0; i <= num_produtos*max_uses; i++)
         K[i] = (int*)malloc(sizeof(int)*pmax);
 
