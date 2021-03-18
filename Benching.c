@@ -1,5 +1,5 @@
 #include <sys/resource.h>
-#include <solucoes.h>
+#include <solucoes.c>
 //Essa função foi escrita pelo professor, feita para medir tempos de CPU
 void Tempo_CPU_Sistema(double *seg_CPU_total, double *seg_sistema_total)
 {
@@ -34,6 +34,71 @@ printf ("Custo = %d\n", custo);
 printf ("Tempo de CPU total = %f\n", s_CPU_final - s_CPU_inicial);
 */
 
+void bench( int num_produtos, int* valores, int* pesos, int pmax , File* arq ){
+
+    double t_cpu , t_sys;
+    int sol, res;
+
+    t_sys = (double) 0;
+
+    sol = 0; // Ingenua
+    t_cpu = ( double )0;
+    Tempo_CPU_Sistema(&t_cpu, &t_sys);
+    result = vers1_ingenua( num_produtos, &valores, &pesos, pmax );
+    Tempo_CPU_Sistema(&t_cpu, &t_sys);
+    fprintf( arq , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu );
+
+    sol = 1; // Versao 1 otimizada
+    t_cpu = ( double )0;
+    Tempo_CPU_Sistema(&t_cpu, &t_sys);
+    result = vers1_opm( num_produtos, &valores, &pesos, pmax );
+    Tempo_CPU_Sistema(&t_cpu, &t_sys);
+    fprintf( arq , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu );
+
+    sol = 2; // Versao 2 otimizada
+    t_cpu = ( double )0;
+    Tempo_CPU_Sistema(&t_cpu, &t_sys);
+    result = vers2_opm( num_produtos, &valores, &pesos, pmax );
+    Tempo_CPU_Sistema(&t_cpu, &t_sys);
+    fprintf( arq , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu );
+
+}
+
+void proximo_caso_teste( File* arq , int* num_produtos, int* valores, int* pesos, int* pmax ){
+
+    fscanf( arq, "%d", num_produtos );
+    fscanf( arq, "%d", pmax );
+
+    pesos = (int*)malloc(sizeof(int)*num_produtos);
+    valores = (int*)malloc(sizeof(int)*num_produtos);
+
+    for( int i = 0; i < *num_produtos; i++ ){
+        fscanf( arq, "%d %d", &valores[i], &pesos[ i ] );
+    }
+}
+
+
 int main(){
+
+    File *arq_r = fopen( "casos_teste.txt", "r");
+    int num_testes;
+    fscanf( arq_r, "%d", &num_testes; );
+
+    File *arq_w = fopen( "resultados.csv", "w");
+    fprintf( arq_w, "\n");
+
+    int num_produtos, pmax;
+    int[] valores;
+    int[] pesos;
+
+    for( int i = 0 ; i < num_testes; i++ ){
+        proximo_caso_teste( arq_r , &num_produtos , valores , pesos , &pmax );
+        bench( &num_produtos , valores , pesos , &pmax, arq_w );
+        free( pesos );
+        free( valores );
+    }
+
+    fclose( arq_w);
+    fclose( arq_r);
     return 0;
 }
