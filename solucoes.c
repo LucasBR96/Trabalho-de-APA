@@ -29,9 +29,9 @@ int vers1_opm(int num_produtos, int valores[], int pesos[], int pmax)
         K[i] = (int*)malloc(sizeof(int)*pmax);
 
 
-    for (i = 1; i <= num_produtos; i++)
+    for (i = 0; i <= num_produtos; i++)
     {
-       for (w = 1; w <= pmax; w++)
+       for (w = 0; w <= pmax; w++)
         {
             if (i==0 || w==0)
                 K[i][w] = 0;
@@ -105,9 +105,6 @@ int vers2_opm(int num_produtos, int valores[], int pesos[], int pmax)
     }
     int i, w;
     int **K;
-
-    K = (int**)malloc(sizeof(int*)*num_produtos*max_uses);
-
     for (i = 0; i <= num_produtos*max_uses; i++)
         K[i] = (int*)malloc(sizeof(int)*pmax);
 
@@ -151,7 +148,7 @@ int main(){
 
     printf("ingenua v1 %d \n", vers1_ingenua(num_produtos, valores, pesos, pmax));
     printf("opm v1 %d\n", vers1_opm(num_produtos, valores, pesos, pmax));
-    printf("opm v2 %d\n", vers2_opm(num_produtos, valores, pesos, pmax));
+    //printf("opm v2 %d\n", vers2_opm(num_produtos, valores, pesos, pmax));
     
 
     return 0;
