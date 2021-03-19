@@ -36,8 +36,11 @@ int vers1_opm(int num_produtos, int *valores, int *pesos, int pmax)
         {
             if (i==0 || w==0)
                 K[i][w] = 0;
-            else if (pesos[i-1] <= w)
-                K[i][w] = max(valores[i-1] + K[i-1][w-pesos[i-1]],  K[i-1][w]);
+            else if (pesos[i-1] <= w){
+                int pos = pesos[i-1];
+                int val = valores[i-1];
+                K[i][w] = max(val + K[i-1][w-pos],  K[i-1][w]);
+            }
             else
                 K[i][w] = K[i-1][w];
         }
@@ -89,8 +92,10 @@ int vers2_opm(int num_produtos, int *valores, int *pesos, int pmax)
             else {
                 K[i][w] = K[i-1][w];
                 for (int u = 1; u <= max_uses; u++){
-                    if (u * pesos[i-1] <= w){
-                        K[i][w] = max((u * valores[i-1]) + K[i-1][w-(u * pesos[i-1])],  K[i][w]);                        
+                    int peso = pesos[i-1];
+                    int val = valores[i-1];
+                    if (u * peso <= w){
+                        K[i][w] = max((u * val) + K[i-1][w-(u * peso)],  K[i][w]);                        
                     }
                 }
 
