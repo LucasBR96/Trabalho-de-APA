@@ -40,7 +40,7 @@ void bench( int num_produtos, int *valores, int *pesos, int pmax , FILE* arq ){
     double t_cpu_fim , t_sys_fim;
     int sol, res;
 
-    if(num_produtos < 25){
+    if(num_produtos <= 25){
 
         sol = 0; // Ingenua
         Tempo_CPU_Sistema(&t_cpu_ini, &t_sys_ini);
