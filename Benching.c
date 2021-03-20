@@ -1,5 +1,5 @@
 #include <sys/resource.h>
-#include <solucoes.c>
+#include "solucoes.c"
 //Essa função foi escrita pelo professor, feita para medir tempos de CPU
 void Tempo_CPU_Sistema(double *seg_CPU_total, double *seg_sistema_total)
 {
@@ -34,71 +34,78 @@ printf ("Custo = %d\n", custo);
 printf ("Tempo de CPU total = %f\n", s_CPU_final - s_CPU_inicial);
 */
 
-void bench( int num_produtos, int* valores, int* pesos, int pmax , File* arq ){
+void bench( int num_produtos, int *valores, int *pesos, int pmax , FILE* arq ){
 
-    double t_cpu , t_sys;
+    double t_cpu_ini , t_sys_ini;
+    double t_cpu_fim , t_sys_fim;
     int sol, res;
 
-    t_sys = (double) 0;
+    if(num_produtos <= 25){
 
-    sol = 0; // Ingenua
-    t_cpu = ( double )0;
-    Tempo_CPU_Sistema(&t_cpu, &t_sys);
-    result = vers1_ingenua( num_produtos, &valores, &pesos, pmax );
-    Tempo_CPU_Sistema(&t_cpu, &t_sys);
-    fprintf( arq , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu );
-
+        sol = 0; // Ingenua
+        Tempo_CPU_Sistema(&t_cpu_ini, &t_sys_ini);
+        res = vers1_ingenua( num_produtos, valores, pesos, pmax );
+        Tempo_CPU_Sistema(&t_cpu_fim, &t_sys_fim);
+        fprintf( arq , "%d,%d,%d,%f,\n", sol, num_produtos, pmax , t_cpu_fim - t_cpu_ini );
+    }
     sol = 1; // Versao 1 otimizada
-    t_cpu = ( double )0;
-    Tempo_CPU_Sistema(&t_cpu, &t_sys);
-    result = vers1_opm( num_produtos, &valores, &pesos, pmax );
-    Tempo_CPU_Sistema(&t_cpu, &t_sys);
-    fprintf( arq , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu );
+    Tempo_CPU_Sistema(&t_cpu_ini, &t_sys_ini);
+    res = vers1_opm( num_produtos, valores, pesos, pmax );
+    Tempo_CPU_Sistema(&t_cpu_fim, &t_sys_fim);
+    fprintf( arq , "%d,%d,%d,%f,\n", sol, num_produtos, pmax , t_cpu_fim - t_cpu_ini );
 
     sol = 2; // Versao 2 otimizada
-    t_cpu = ( double )0;
-    Tempo_CPU_Sistema(&t_cpu, &t_sys);
-    result = vers2_opm( num_produtos, &valores, &pesos, pmax );
-    Tempo_CPU_Sistema(&t_cpu, &t_sys);
-    fprintf( arq , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu );
+    Tempo_CPU_Sistema(&t_cpu_ini, &t_sys_ini);
+    res = vers2_opm( num_produtos, valores, pesos, pmax );
+    Tempo_CPU_Sistema(&t_cpu_fim, &t_sys_fim);
+    fprintf( arq , "%d,%d,%d,%f,\n", sol, num_produtos, pmax , t_cpu_fim - t_cpu_ini );
 
-}
-
-void proximo_caso_teste( File* arq , int* num_produtos, int* valores, int* pesos, int* pmax ){
-
-    fscanf( arq, "%d", num_produtos );
-    fscanf( arq, "%d", pmax );
-
-    pesos = (int*)malloc(sizeof(int)*num_produtos);
-    valores = (int*)malloc(sizeof(int)*num_produtos);
-
-    for( int i = 0; i < *num_produtos; i++ ){
-        fscanf( arq, "%d %d", &valores[i], &pesos[ i ] );
-    }
 }
 
 
 int main(){
 
-    File *arq_r = fopen( "casos_teste.txt", "r");
+    FILE *arq_r;
+    arq_r = fopen( "casos_teste.txt", "r");
     int num_testes;
-    fscanf( arq_r, "%d", &num_testes; );
-
-    File *arq_w = fopen( "resultados.csv", "w");
+    fscanf( arq_r, "%d", &num_testes );
+    FILE *arq_w;
+    arq_w = fopen( "resultados.csv", "w");
     fprintf( arq_w, "\n");
 
     int num_produtos, pmax;
-    int[] valores;
-    int[] pesos;
+    int *valores;
+    int *pesos;
+
+    fprintf( arq_w , "i,N,M,t,\n");
 
     for( int i = 0 ; i < num_testes; i++ ){
-        proximo_caso_teste( arq_r , &num_produtos , valores , pesos , &pmax );
-        bench( &num_produtos , valores , pesos , &pmax, arq_w );
-        free( pesos );
-        free( valores );
-    }
 
-    fclose( arq_w);
-    fclose( arq_r);
+        //proximo_caso_teste( arq_r , &num_produtos , &valores , &pesos , &pmax );
+
+        fscanf( arq_r, "%d", &num_produtos );
+        fscanf( arq_r, "%d", &pmax );
+        pesos = (int*)malloc(sizeof(int)*(num_produtos));
+        valores = (int*)malloc(sizeof(int)*(num_produtos));
+
+        for( int i = 0; i < num_produtos; i++ ){
+            int val1, val2;
+            fscanf( arq_r, "%d %d", &val1, &val2 );
+            valores[i] = val1;
+            pesos[i] = val2;
+        }
+
+        bench( num_produtos , valores , pesos , pmax, arq_w );
+
+        free(pesos);
+        free(valores);
+
+
+    }        
+
+    fclose(arq_w);
+    fclose(arq_r);
+
+
     return 0;
 }
