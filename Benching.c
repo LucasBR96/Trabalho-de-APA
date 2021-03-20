@@ -36,37 +36,32 @@ printf ("Tempo de CPU total = %f\n", s_CPU_final - s_CPU_inicial);
 
 void bench( int num_produtos, int *valores, int *pesos, int pmax , FILE* arq ){
 
-    double t_cpu , t_sys;
+    double t_cpu_ini , t_sys_ini;
+    double t_cpu_fim , t_sys_fim;
     int sol, res;
 
-    t_sys = (double) 0;
     if(num_produtos < 25){
 
         sol = 0; // Ingenua
-        t_cpu = ( double )0;
-        Tempo_CPU_Sistema(&t_cpu, &t_sys);
+        Tempo_CPU_Sistema(&t_cpu_ini, &t_sys_ini);
         res = vers1_ingenua( num_produtos, valores, pesos, pmax );
-        Tempo_CPU_Sistema(&t_cpu, &t_sys);
-        fprintf( arq , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu );
-        fprintf( stderr , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu );
+        Tempo_CPU_Sistema(&t_cpu_fim, &t_sys_fim);
+        fprintf( arq , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu_fim - t_cpu_ini );
+        fprintf( stderr , "%d,%d,%f,%f\n", pmax, num_produtos, t_cpu_fim , t_cpu_ini );
     }
-
     sol = 1; // Versao 1 otimizada
-    t_cpu = ( double )0;
-    Tempo_CPU_Sistema(&t_cpu, &t_sys);
+    Tempo_CPU_Sistema(&t_cpu_ini, &t_sys_ini);
     res = vers1_opm( num_produtos, valores, pesos, pmax );
-    Tempo_CPU_Sistema(&t_cpu, &t_sys);
-    fprintf( arq , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu );
-    fprintf( stderr , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu );
-
+    Tempo_CPU_Sistema(&t_cpu_fim, &t_sys_fim);
+    fprintf( arq , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu_fim - t_cpu_ini );
+    fprintf( stderr , "%d,%d,%f,%f\n", pmax, num_produtos, t_cpu_fim , t_cpu_ini );
 
     sol = 2; // Versao 2 otimizada
-    t_cpu = ( double )0;
-    Tempo_CPU_Sistema(&t_cpu, &t_sys);
+    Tempo_CPU_Sistema(&t_cpu_ini, &t_sys_ini);
     res = vers2_opm( num_produtos, valores, pesos, pmax );
-    Tempo_CPU_Sistema(&t_cpu, &t_sys);
-    fprintf( arq , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu );
-    fprintf( stderr , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu );
+    Tempo_CPU_Sistema(&t_cpu_fim, &t_sys_fim);
+    fprintf( arq , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu_fim - t_cpu_ini );
+    fprintf( stderr , "%d,%d,%f,%f\n", pmax, num_produtos, t_cpu_fim , t_cpu_ini );
 
 
 }
