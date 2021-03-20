@@ -46,23 +46,19 @@ void bench( int num_produtos, int *valores, int *pesos, int pmax , FILE* arq ){
         Tempo_CPU_Sistema(&t_cpu_ini, &t_sys_ini);
         res = vers1_ingenua( num_produtos, valores, pesos, pmax );
         Tempo_CPU_Sistema(&t_cpu_fim, &t_sys_fim);
-        fprintf( arq , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu_fim - t_cpu_ini );
-        fprintf( stderr , "%d,%d,%f,%f\n", pmax, num_produtos, t_cpu_fim , t_cpu_ini );
+        fprintf( arq , "%d,%d,%d,%f,\n", sol, num_produtos, pmax , t_cpu_fim - t_cpu_ini );
     }
     sol = 1; // Versao 1 otimizada
     Tempo_CPU_Sistema(&t_cpu_ini, &t_sys_ini);
     res = vers1_opm( num_produtos, valores, pesos, pmax );
     Tempo_CPU_Sistema(&t_cpu_fim, &t_sys_fim);
-    fprintf( arq , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu_fim - t_cpu_ini );
-    fprintf( stderr , "%d,%d,%f,%f\n", pmax, num_produtos, t_cpu_fim , t_cpu_ini );
+    fprintf( arq , "%d,%d,%d,%f,\n", sol, num_produtos, pmax , t_cpu_fim - t_cpu_ini );
 
     sol = 2; // Versao 2 otimizada
     Tempo_CPU_Sistema(&t_cpu_ini, &t_sys_ini);
     res = vers2_opm( num_produtos, valores, pesos, pmax );
     Tempo_CPU_Sistema(&t_cpu_fim, &t_sys_fim);
-    fprintf( arq , "%d,%d,%d,%f\n", pmax, num_produtos, sol , t_cpu_fim - t_cpu_ini );
-    fprintf( stderr , "%d,%d,%f,%f\n", pmax, num_produtos, t_cpu_fim , t_cpu_ini );
-
+    fprintf( arq , "%d,%d,%d,%f,\n", sol, num_produtos, pmax , t_cpu_fim - t_cpu_ini );
 
 }
 
@@ -73,7 +69,6 @@ int main(){
     arq_r = fopen( "casos_teste.txt", "r");
     int num_testes;
     fscanf( arq_r, "%d", &num_testes );
-
     FILE *arq_w;
     arq_w = fopen( "resultados.csv", "w");
     fprintf( arq_w, "\n");
@@ -82,6 +77,7 @@ int main(){
     int *valores;
     int *pesos;
 
+    fprintf( arq_w , "i,N,M,t,\n");
 
     for( int i = 0 ; i < num_testes; i++ ){
 
