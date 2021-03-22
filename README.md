@@ -13,18 +13,18 @@
     e de um conjunto finito de N produtos distintos . Para cada prodruto p desse conjunto, existem associados
     os valores:
 
-        v( p ) -> valor do produto p 
-        y( p ) -> peso ou volume de p
+        V( p ) -> valor do produto p 
+        X( p ) -> peso ou volume de p
 
-    Deve-se descobrir, então, quais e quantos produtos deve-se colocar na mochila, de forma que maximize o
-    somatório dos seus valores, mas que o somatório dos seus pesos não exceda M.
+    Deve-se descobrir, então, qual é maior valor total que pode ser carregado na mochila, sem que o somatório
+    dos pesos ultrapasse o peso maximo
 
     Foi pedida a resolução de duas versões desse problema. Na primeira, so se pode colocar, no maximo, uma
     unidade de cada produto, enquanto no segunda, pode-se pôr mais de uma unidadade do mesmo produto. 
 
     ------ Os arquivos ------------------------------------------------------------------------------------
 
-    Soluções.h -> Esse arquivo contém, para cada versão do problema, duas soluções, uma ingênua e outra otimizada.
+    Soluções.c -> Esse arquivo contém a solução ingênua e as otimizadas da versão 1 e 2 
     A ingênua é de facil compreensão, porem é muito lenta para ser viável, servindo apenas de referência para a 
     solução otimizada, que é executada em tempo razoável. Além disso, existe uma função que le os casos de teste
 
@@ -39,6 +39,34 @@
     
     gera_grafico.py -> script que gera os graficos que serão usados na apresentação final do trabalho.
 
+    casos_teste.txt -> Os casos teste para serem testados em Benching.c, sua forma:
+        A primeira linha indica quantos T casos teste existem.
+        As linhas seguintes representam os T casos teste, todos na forma:
+            -A primeira linha indica o valor de N
+            -A segunda indica o valor de M
+            -As N linhas seguintes contem dois inteiros separados por espaço, representam os
+            valores de V e X de cada produto
+
+    ----- Recursos utilizados -------------------------------------------------------------------------------
+
+    Os Codigos em python foram feitos usando a versão 3.7.2 para windows 10 64bits
+    Além disso foram usadas as seguintes bibliotecas de python:
+    
+         Bliblioteca    Versão
+    1 -  pandas         1.2.3
+    2 -  numpy          1.20.1
+    3 -  matplotlib     3.1.0
+
+    Os Codigos em C foram feitos em Linux/ubuntu versão 18
 
     ----- Guia de Instalação-------------------------------------------------------------------------------
 
+    Para reproduzir os resultados obtidos nesse Trabalho:
+
+    1 - baixe o interpretador de python 3 de versão superior ou igual à 3.7
+    2 - usando pip ou conda, baixe os pacotes de python utilizados
+    3 - salve seus casos em casos_de_teste.txt, usando a formatação descrita acima
+    4 - compile os arquivos em C
+    5 - rode o executavel Benching.exe
+    6 - rode o arquivo gera_grafico.py
+    7 - Os graficos aparecerão na sua tela.
