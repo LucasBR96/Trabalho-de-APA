@@ -40,14 +40,13 @@ void bench( int num_produtos, int *valores, int *pesos, int pmax , FILE* arq ){
     double t_cpu_fim , t_sys_fim;
     int sol, res;
 
-    if(num_produtos <= 25){
 
-        sol = 0; // Ingenua
-        Tempo_CPU_Sistema(&t_cpu_ini, &t_sys_ini);
-        res = vers1_ingenua( num_produtos, valores, pesos, pmax );
-        Tempo_CPU_Sistema(&t_cpu_fim, &t_sys_fim);
-        fprintf( arq , "%d,%d,%d,%f,\n", sol, num_produtos, pmax , t_cpu_fim - t_cpu_ini );
-    }
+    sol = 0; // Ingenua
+    Tempo_CPU_Sistema(&t_cpu_ini, &t_sys_ini);
+    res = vers1_ingenua( num_produtos, valores, pesos, pmax );
+    Tempo_CPU_Sistema(&t_cpu_fim, &t_sys_fim);
+    fprintf( arq , "%d,%d,%d,%f,\n", sol, num_produtos, pmax , t_cpu_fim - t_cpu_ini );
+
     sol = 1; // Versao 1 otimizada
     Tempo_CPU_Sistema(&t_cpu_ini, &t_sys_ini);
     res = vers1_opm( num_produtos, valores, pesos, pmax );
